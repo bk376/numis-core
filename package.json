@@ -38,6 +38,7 @@
     "registry": "http://registry.npmjs.org"
   },
   "dependencies": {
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.2",
+    "web3": "^1.3.6"
   }
 }
