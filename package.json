@@ -1,0 +1,43 @@
+{
+  "name": "@bk376/yaoswap-core",
+  "version": "1.0.1",
+  "description": "🎛 Core contracts for Yaoswap",
+  "homepage": "https://yaoswap.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bk376/yaoswap-core.git"
+  },
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "lint": "prettier ./test/**/*.ts --check",
+    "clean": "rimraf ./artifacts && rimraf ./cache",
+    "precompile": "yarn clean",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.ts",
+    "pretest": "yarn compile",
+    "test": "npx hardhat test",
+    "prepublishOnly": "yarn test && yarn compile",
+    "hardhat": "npx hardhat"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "ethereum-waffle": "^3.2.1",
+    "ethereumjs-tx": "^2.1.2",
+    "ethers": "^5.0.24",
+    "hardhat": "^2.0.6",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "dependencies": {
+    "typescript": "^4.3.2"
+  }
+}
