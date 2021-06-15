@@ -3,6 +3,7 @@
 const { expect } = require('chai');
 const { BigNumber } = require('ethers');
 const { ethers } = require('hardhat');
+// const { factory } = require('typescript');
 const Web3 = require('web3');
 
 const OWNER_ADDRESS = ethers.utils.getAddress(process.env.OWNER_ADDRESS);
@@ -21,11 +22,12 @@ describe('YaoFactory', async () => {
         this.MockContract = await ethers.getContractFactory("contracts/MockContract.sol:MockContract");
     });
 
-    beforeEach(async function () {
-        this.Factory = await this.Factory.deploy(deployer.address)
+    beforeEach(async  () => {
+        this.factory = await this.Factory.deploy(deployer.address)
         await this.factory.deployed()
         this.mock = await this.MockContract.deploy()
         await this.mock.deployed()
+        console.log(`factory is : ${factory}`)
     });
 
     // Test cases
@@ -33,7 +35,7 @@ describe('YaoFactory', async () => {
     //////////////////////////////
     //       Constructor 
     //////////////////////////////
-    describe("Constructor", function () {
+    describe("Constructor",  () => {
         it('decimals default', async function () {
             expect((await this.factory.decimals())).to.equal(DECIMALS);
         });
@@ -48,7 +50,7 @@ describe('YaoFactory', async () => {
     //////////////////////////////
     //  setRemainderDestination 
     //////////////////////////////
-    describe("otherMethod", function () {
+    describe("otherMethod",  () => {
         console.log('Howdy fellow man')
     });
 });
