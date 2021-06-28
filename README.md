@@ -1,6 +1,6 @@
-# 🎛 Core contracts for Yao Finance
+# 🎛 Core contracts for Numis Finance
 
-# Yao Factory
+# Numis Factory
 
 # Local Development
 

@@ -1,14 +1,14 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity =0.5.16;
 
-import "./interfaces/IYaoERC20.sol";
+import "./interfaces/INumisERC20.sol";
 import "./libraries/SafeMath.sol";
 
-contract YaoERC20 is IYaoERC20 {
+contract NumisERC20 is INumisERC20 {
     using SafeMath for uint256;
 
-    string public constant name = "Yao LPs";
-    string public constant symbol = "Yao-LP";
+    string public constant name = "Numis LPs";
+    string public constant symbol = "Numis-LP";
     uint8 public constant decimals = 18;
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
@@ -109,7 +109,7 @@ contract YaoERC20 is IYaoERC20 {
         bytes32 r,
         bytes32 s
     ) external {
-        require(deadline >= block.timestamp, "Yao: EXPIRED");
+        require(deadline >= block.timestamp, "Numis: EXPIRED");
         bytes32 digest =
             keccak256(
                 abi.encodePacked(
@@ -130,7 +130,7 @@ contract YaoERC20 is IYaoERC20 {
         address recoveredAddress = ecrecover(digest, v, r, s);
         require(
             recoveredAddress != address(0) && recoveredAddress == owner,
-            "Yao: INVALID_SIGNATURE"
+            "Numis: INVALID_SIGNATURE"
         );
         _approve(owner, spender, value);
     }

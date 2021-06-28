@@ -1,12 +1,12 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity =0.5.16;
 
-import "./interfaces/IYaoFactory.sol";
-import "./YaoPair.sol";
+import "./interfaces/INumisFactory.sol";
+import "./NumisPair.sol";
 
-contract YaoFactory is IYaoFactory {
+contract NumisFactory is INumisFactory {
     bytes32 public constant INIT_CODE_PAIR_HASH =
-        keccak256(abi.encodePacked(type(YaoPair).creationCode));
+        keccak256(abi.encodePacked(type(NumisPair).creationCode));
 
     address public feeTo;
     address public feeToSetter;
@@ -33,17 +33,17 @@ contract YaoFactory is IYaoFactory {
         external
         returns (address pair)
     {
-        require(tokenA != tokenB, "Yao: IDENTICAL_ADDRESSES");
+        require(tokenA != tokenB, "Numis: IDENTICAL_ADDRESSES");
         (address token0, address token1) =
             tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
-        require(token0 != address(0), "Yao: ZERO_ADDRESS");
-        require(getPair[token0][token1] == address(0), "Yao: PAIR_EXISTS"); // single check is sufficient
-        bytes memory bytecode = type(YaoPair).creationCode;
+        require(token0 != address(0), "Numis: ZERO_ADDRESS");
+        require(getPair[token0][token1] == address(0), "Numis: PAIR_EXISTS"); // single check is sufficient
+        bytes memory bytecode = type(NumisPair).creationCode;
         bytes32 salt = keccak256(abi.encodePacked(token0, token1));
         assembly {
             pair := create2(0, add(bytecode, 32), mload(bytecode), salt)
         }
-        IYaoPair(pair).initialize(token0, token1);
+        INumisPair(pair).initialize(token0, token1);
         getPair[token0][token1] = pair;
         getPair[token1][token0] = pair; // populate mapping in the reverse direction
         allPairs.push(pair);
@@ -51,12 +51,12 @@ contract YaoFactory is IYaoFactory {
     }
 
     function setFeeTo(address _feeTo) external {
-        require(msg.sender == feeToSetter, "Yao: FORBIDDEN");
+        require(msg.sender == feeToSetter, "Numis: FORBIDDEN");
         feeTo = _feeTo;
     }
 
     function setFeeToSetter(address _feeToSetter) external {
-        require(msg.sender == feeToSetter, "Yao: FORBIDDEN");
+        require(msg.sender == feeToSetter, "Numis: FORBIDDEN");
         feeToSetter = _feeToSetter;
     }
 }

@@ -1,15 +1,15 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity =0.5.16;
 
-import "./interfaces/IYaoPair.sol";
-import "./YaoERC20.sol";
+import "./interfaces/INumisPair.sol";
+import "./NumisERC20.sol";
 import "./libraries/Math.sol";
 import "./libraries/UQ112x112.sol";
 import "./interfaces/IERC20.sol";
-import "./interfaces/IYaoFactory.sol";
-import "./interfaces/IYaoCallee.sol";
+import "./interfaces/INumisFactory.sol";
+import "./interfaces/INumisCallee.sol";
 
-contract YaoPair is IYaoPair, YaoERC20 {
+contract NumisPair is INumisPair, NumisERC20 {
     using SafeMath for uint256;
     using UQ112x112 for uint224;
 
@@ -31,7 +31,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
 
     uint256 private unlocked = 1;
     modifier lock() {
-        require(unlocked == 1, "Yao: LOCKED");
+        require(unlocked == 1, "Numis: LOCKED");
         unlocked = 0;
         _;
         unlocked = 1;
@@ -60,7 +60,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
             token.call(abi.encodeWithSelector(SELECTOR, to, value));
         require(
             success && (data.length == 0 || abi.decode(data, (bool))),
-            "Yao: TRANSFER_FAILED"
+            "Numis: TRANSFER_FAILED"
         );
     }
 
@@ -87,7 +87,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
 
     // called once by the factory at time of deployment
     function initialize(address _token0, address _token1) external {
-        require(msg.sender == factory, "Yao: FORBIDDEN"); // sufficient check
+        require(msg.sender == factory, "Numis: FORBIDDEN"); // sufficient check
         token0 = _token0;
         token1 = _token1;
     }
@@ -101,7 +101,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
     ) private {
         require(
             balance0 <= uint112(-1) && balance1 <= uint112(-1),
-            "Yao: OVERFLOW"
+            "Numis: OVERFLOW"
         );
         uint32 blockTimestamp = uint32(block.timestamp % 2**32);
         uint32 timeElapsed = blockTimestamp - blockTimestampLast; // overflow is desired
@@ -125,7 +125,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
         private
         returns (bool feeOn)
     {
-        address feeTo = IYaoFactory(factory).feeTo();
+        address feeTo = INumisFactory(factory).feeTo();
         feeOn = feeTo != address(0);
         uint256 _kLast = kLast; // gas savings
         if (feeOn) {
@@ -163,7 +163,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
                 amount1.mul(_totalSupply) / _reserve1
             );
         }
-        require(liquidity > 0, "Yao: INSUFFICIENT_LIQUIDITY_MINTED");
+        require(liquidity > 0, "Numis: INSUFFICIENT_LIQUIDITY_MINTED");
         _mint(to, liquidity);
 
         _update(balance0, balance1, _reserve0, _reserve1);
@@ -190,7 +190,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
         amount1 = liquidity.mul(balance1) / _totalSupply; // using balances ensures pro-rata distribution
         require(
             amount0 > 0 && amount1 > 0,
-            "Yao: INSUFFICIENT_LIQUIDITY_BURNED"
+            "Numis: INSUFFICIENT_LIQUIDITY_BURNED"
         );
         _burn(address(this), liquidity);
         _safeTransfer(_token0, to, amount0);
@@ -212,12 +212,12 @@ contract YaoPair is IYaoPair, YaoERC20 {
     ) external lock {
         require(
             amount0Out > 0 || amount1Out > 0,
-            "Yao: INSUFFICIENT_OUTPUT_AMOUNT"
+            "Numis: INSUFFICIENT_OUTPUT_AMOUNT"
         );
         (uint112 _reserve0, uint112 _reserve1, ) = getReserves(); // gas savings
         require(
             amount0Out < _reserve0 && amount1Out < _reserve1,
-            "Yao: INSUFFICIENT_LIQUIDITY"
+            "Numis: INSUFFICIENT_LIQUIDITY"
         );
 
         uint256 balance0;
@@ -226,11 +226,11 @@ contract YaoPair is IYaoPair, YaoERC20 {
             // scope for _token{0,1}, avoids stack too deep errors
             address _token0 = token0;
             address _token1 = token1;
-            require(to != _token0 && to != _token1, "Yao: INVALID_TO");
+            require(to != _token0 && to != _token1, "Numis: INVALID_TO");
             if (amount0Out > 0) _safeTransfer(_token0, to, amount0Out); // optimistically transfer tokens
             if (amount1Out > 0) _safeTransfer(_token1, to, amount1Out); // optimistically transfer tokens
             if (data.length > 0)
-                IYaoCallee(to).yaoCall(
+                INumisCallee(to).numisCall(
                     msg.sender,
                     amount0Out,
                     amount1Out,
@@ -249,7 +249,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
                 : 0;
         require(
             amount0In > 0 || amount1In > 0,
-            "Yao: INSUFFICIENT_INPUT_AMOUNT"
+            "Numis: INSUFFICIENT_INPUT_AMOUNT"
         );
         {
             // scope for reserve{0,1}Adjusted, avoids stack too deep errors
@@ -258,7 +258,7 @@ contract YaoPair is IYaoPair, YaoERC20 {
             require(
                 balance0Adjusted.mul(balance1Adjusted) >=
                     uint256(_reserve0).mul(_reserve1).mul(1000**2),
-                "Yao: K"
+                "Numis: K"
             );
         }
 

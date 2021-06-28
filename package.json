@@ -1,11 +1,11 @@
 {
-  "name": "@bk376/yaoswap-core",
-  "version": "1.0.1",
-  "description": "🎛 Core contracts for Yaoswap",
-  "homepage": "https://yaoswap.io",
+  "name": "@numisfinance/numis-core",
+  "version": "1.0.0",
+  "description": "🎛 Core contracts for Numis finance",
+  "homepage": "https://numisfinance.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bk376/yaoswap-core.git"
+    "url": "https://github.com/numis-finance/numis-core.git"
   },
   "license": "GPL-3.0-or-later",
   "scripts": {
@@ -13,7 +13,7 @@
     "clean": "rimraf ./artifacts && rimraf ./cache",
     "precompile": "yarn clean",
     "compile": "npx hardhat compile",
-    "deploy": "npx hardhat run scripts/deploy.ts",
+    "deploy": "npx hardhat run scripts/deploy.js",
     "pretest": "yarn compile",
     "test": "npx hardhat test",
     "prepublishOnly": "yarn test && yarn compile",
@@ -38,6 +38,7 @@
     "registry": "http://registry.npmjs.org"
   },
   "dependencies": {
+    "inquirer": "^8.1.1",
     "typescript": "^4.3.2",
     "web3": "^1.3.6"
   }

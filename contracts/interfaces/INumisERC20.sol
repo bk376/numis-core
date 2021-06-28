@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.5.0;
 
-interface IYaoERC20 {
+interface INumisERC20 {
     event Approval(
         address indexed owner,
         address indexed spender,

@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.5.0;
 
-interface IYaoFactory {
+interface INumisFactory {
     event PairCreated(
         address indexed token0,
         address indexed token1,
